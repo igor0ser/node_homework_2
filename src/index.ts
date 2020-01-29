@@ -1,7 +1,10 @@
 import * as express from 'express'
-import { userRouter } from './user'
+import * as bodyParser from 'body-parser'
+import { userRouter } from './user/router'
 
 const app = express()
+
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
   res.send('Node.js homework #2')
@@ -9,6 +12,6 @@ app.get('/', function (req, res) {
 
 app.use('/users', userRouter)
 
-console.log(123);
-
 app.listen(3000)
+
+console.log('App is listening on port 3000')
