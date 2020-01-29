@@ -1,14 +1,8 @@
 import * as uuid from 'uuid/v1'
 import { User } from './user.interface'
 import { initialUsers } from './data/index'
-import { validate } from './validate'
 
 let users: User[] = [...initialUsers]
-
-const res = validate(initialUsers[0])
-const { error } = res;
-console.log(error.toString());
-console.log(res.toString());
 
 export const userDB = {
   get: (id: string): User | undefined => {
@@ -19,13 +13,23 @@ export const userDB = {
       .filter(user => user.login.includes(loginSubstring))
       .slice(0, limit)
   },
-  create: (user: User): boolean => {
+  create: (user: Partial<User>): User => {
+    const newUser = { ...user, id: uuid(), isDeleted: false } as User
+
     users = [
       ...users,
-      { ...user, id: uuid(), isDeleted: false },
+      newUser,
     ]
 
-    return true
+    return newUser
+  },
+  update: (id: string, updatedUser: Partial<User>): User => {
+    users = users.map(user => id === user.id ? {
+      ...user,
+      ...updatedUser,
+    } : user)
+
+    return userDB.get(id)
   },
   remove: (id: string): boolean => {
     users = users.map(user => ({
@@ -35,12 +39,4 @@ export const userDB = {
 
     return !!userDB.get(id)
   },
-  update: (updatedUser: User): boolean => {
-    users = users.map(user => updatedUser.id === user.id ? {
-      ...user,
-      ...updatedUser,
-    } : user)
-
-    return !!userDB.get(updatedUser.id)
-  }
 }
