@@ -1,0 +1,14 @@
+{ const: initialUsers =
+        {
+            "id": "John",
+            "login": "abcd",
+            "password": "123",
+            "age": 33,
+            "isDeleted": false
+        },
+    "id": "David",
+    "login": "efgh",
+    "password": "456",
+    "age": 44,
+    "isDeleted": false
+}
