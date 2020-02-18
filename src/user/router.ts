@@ -56,7 +56,7 @@ userRouter.put('/:id', (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const updatedUser: User | undefined = userDB.update(req.params.id, req.body);
+    const updatedUser: User | false = userDB.update(req.params.id, req.body);
 
     if (updatedUser) {
         res.status(202).json(updatedUser);

@@ -2,7 +2,7 @@ import * as uuid from 'uuid/v1';
 import { User } from './user.interface';
 import { initialUsers } from './data/index';
 
-let users: User[] = [...initialUsers];
+const users: User[] = [...initialUsers];
 
 const sortAlpphabeticallyBy = (key: string) => (a: any, b: any) => {
     const fieldFromA = a[key];
@@ -26,27 +26,28 @@ export const userDB = {
     create: (user: Partial<User>): User => {
         const newUser = { ...user, id: uuid(), isDeleted: false } as User;
 
-        users = [
-            ...users,
-            newUser
-        ];
+        users.push(newUser);
 
         return newUser;
     },
-    update: (id: string, updatedUser: Partial<User>): User | undefined => {
-        users = users.map(user => id === user.id ? {
-            ...user,
-            ...updatedUser
-        } : user);
+    update: (id: string, updatedUser: Partial<User>): User | false => {
+        const user = userDB.get(id);
 
-        return userDB.get(id);
+        if (!user) return false;
+
+        Object.assign(user, updatedUser);
+
+        return user;
     },
     remove: (id: string): boolean => {
-        users = users.map(user => ({
-            ...user,
-            isDeleted: id === user.id || user.isDeleted
-        }));
+        const userToRemove = userDB.get(id);
 
-        return !!userDB.get(id);
+        if (!userToRemove) {
+            return false;
+        }
+
+        userToRemove.isDeleted = true;
+
+        return true;
     }
 };
