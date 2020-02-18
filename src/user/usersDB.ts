@@ -33,7 +33,7 @@ export const userDB = {
 
         return newUser;
     },
-    update: (id: string, updatedUser: Partial<User>): User => {
+    update: (id: string, updatedUser: Partial<User>): User | undefined => {
         users = users.map(user => id === user.id ? {
             ...user,
             ...updatedUser

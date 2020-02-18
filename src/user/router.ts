@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { userDB } from './usersDB';
+import { User } from './user.interface';
 import { validateOnUpdate, validateOnCreate } from './validate';
 
 export const userRouter = Router();
 
 userRouter.get('/:id', (req, res) => {
-    const user = userDB.get(req.params.id);
+    const user: User = userDB.get(req.params.id);
 
     if (user) {
         res.status(200).json(user);
@@ -43,7 +44,7 @@ userRouter.post('/', (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const createdUser = userDB.create(req.body);
+    const createdUser: User = userDB.create(req.body);
     res.status(201).json(createdUser);
 });
 
@@ -55,7 +56,7 @@ userRouter.patch('/:id', (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const updatedUser = userDB.update(req.params.id, req.body);
+    const updatedUser: User | undefined = userDB.update(req.params.id, req.body);
 
     if (updatedUser) {
         res.status(202).json(updatedUser);
