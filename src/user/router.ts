@@ -48,7 +48,7 @@ userRouter.post('/', (req, res) => {
     res.status(201).json(createdUser);
 });
 
-userRouter.patch('/:id', (req, res) => {
+userRouter.put('/:id', (req, res) => {
     const userToUpdate = req.body;
     const { error } = validateOnUpdate(userToUpdate);
 
