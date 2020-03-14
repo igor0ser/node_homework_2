@@ -1,52 +1,77 @@
-import * as uuid from 'uuid/v1';
-import { User } from './user.interface';
-import { initialUsers } from './data/index';
+import { User,  } from './user.interface';
+import { Sequelize, Model, DataTypes, Op } from 'sequelize'
 
-const users: User[] = [...initialUsers];
+const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
+    host: 'localhost',
+    dialect: 'postgres'
+});
 
-const sortAlpphabeticallyBy = (key: string) => (a: any, b: any) => {
-    const fieldFromA = a[key];
-    const fieldFromB = b[key];
+sequelize
+    .authenticate()
 
-    if (fieldFromA < fieldFromB) return -1;
-    if (fieldFromA > fieldFromB) return 1;
-    return 0;
-};
+class UserModel extends Model {}
+
+UserModel.init({
+    login: DataTypes.STRING,
+    password: DataTypes.STRING,
+    age: DataTypes.INTEGER,
+    isDeleted: DataTypes.BOOLEAN
+}, {
+    modelName: 'User',
+    sequelize
+});
 
 export const userDB = {
-    get: (id: string): User | undefined => {
-        return users.find(user => user.id === id);
+    get: async (id: string): Promise<User | undefined> => {
+        const res = await UserModel.findOne({
+            where: { id }
+        })
+
+        return res;
     },
-    getByLogin: (loginSubstring: string, limit: number = 10): User[] => {
-        return users
-            .filter(user => user.login.includes(loginSubstring))
-            .sort(sortAlpphabeticallyBy('login'))
-            .slice(0, limit);
+    getByLogin: async (loginSubstring: string, limit: number = 10): Promise<User[]> => {
+        const res = await UserModel.findAll({
+            where: {
+                login: {
+                    [Op.startsWith]: loginSubstring
+                }
+            },
+            limit,
+            order: [
+                ['login', 'DESC']
+            ]
+        });
+        
+        return res;
     },
-    create: (user: Partial<User>): User => {
-        const newUser = { ...user, id: uuid(), isDeleted: false } as User;
+    create: async(user: Partial<User>): Promise<User> => {
+        const newUser = { ...user, isDeleted: false } as User;
+        
+        const res = await UserModel.create(newUser)
 
-        users.push(newUser);
-
-        return newUser;
+        return res;
     },
-    update: (id: string, updatedUser: Partial<User>): User | false => {
-        const user = userDB.get(id);
+    update: async (id: string, updatedUser: Partial<User>): Promise<User | false> => {
+        const res = await UserModel.findOne({
+            where: { id }
+        });
 
-        if (!user) return false;
+        if (!res) return false;
 
-        Object.assign(user, updatedUser);
+        res.update(updatedUser);
+        await res.save();
 
-        return user;
+        return res;
     },
-    remove: (id: string): boolean => {
-        const userToRemove = userDB.get(id);
+    remove: async (id: string): Promise<boolean> => {
+        const res = await UserModel.findOne({
+            where: { id }
+        })
 
-        if (!userToRemove) {
-            return false;
-        }
+        if (!res) return false;
 
-        userToRemove.isDeleted = true;
+        res.update({ isDeleted: true });
+        await res.save();
 
         return true;
     }
