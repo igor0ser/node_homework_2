@@ -9,7 +9,7 @@ const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
 sequelize
     .authenticate()
 
-class UserModel extends Model {}
+export class UserModel extends Model {}
 
 UserModel.init({
     login: DataTypes.STRING,
@@ -22,14 +22,14 @@ UserModel.init({
 });
 
 export const userDB = {
-    get: async (id: string): Promise<User | undefined> => {
+    get: async (id: string): Promise<UserModel | undefined> => {
         const res = await UserModel.findOne({
             where: { id }
         })
 
         return res;
     },
-    getByLogin: async (loginSubstring: string, limit: number = 10): Promise<User[]> => {
+    getByLogin: async (loginSubstring: string, limit: number = 10): Promise<UserModel[]> => {
         const res = await UserModel.findAll({
             where: {
                 login: {
@@ -44,14 +44,14 @@ export const userDB = {
         
         return res;
     },
-    create: async(user: Partial<User>): Promise<User> => {
+    create: async(user: Partial<User>): Promise<UserModel> => {
         const newUser = { ...user, isDeleted: false } as User;
         
         const res = await UserModel.create(newUser)
 
         return res;
     },
-    update: async (id: string, updatedUser: Partial<User>): Promise<User | false> => {
+    update: async (id: string, updatedUser: Partial<User>): Promise<UserModel | false> => {
         const res = await UserModel.findOne({
             where: { id }
         });

@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import { userDB } from './usersDB';
-import { User } from './user.interface';
+import { userDB, UserModel } from './usersDB';
 import { validateOnUpdate, validateOnCreate } from './validate';
 
 
 export const userRouter = Router();
 
 userRouter.get('/:id', async (req, res) => {
-    const user: User = await userDB.get(req.params.id);
+    const user: UserModel = await userDB.get(req.params.id);
 
     if (user) {
         res.status(200).json(user);
@@ -22,7 +21,9 @@ userRouter.get('/', async (req, res) => {
     if (!login) {
         res.status(404).send('Please specify login query param');
     } else {
-        res.status(200).json(await userDB.getByLogin(login, limit));
+        const users: UserModel[] = await userDB.getByLogin(login, limit);
+
+        res.status(200).json(users);
     }
 });
 
@@ -45,7 +46,8 @@ userRouter.post('/', async (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const createdUser: User = await userDB.create(req.body);
+    const createdUser: UserModel = await userDB.create(req.body);
+
     res.status(201).json(createdUser);
 });
 
@@ -57,7 +59,7 @@ userRouter.put('/:id', async (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const updatedUser: User | false = await userDB.update(req.params.id, req.body);
+    const updatedUser: UserModel | false = await userDB.update(req.params.id, req.body);
 
     if (updatedUser) {
         res.status(202).json(updatedUser);
