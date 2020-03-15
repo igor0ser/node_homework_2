@@ -9,8 +9,8 @@ const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
 sequelize.authenticate()
 
 export class User extends Model<UserAttributes, UserAttributes> {
-
 }
+
 User.init({
     login: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -77,5 +77,4 @@ export const UserModel = {
 
         return res.get() as UserAttributes;
     },
-
 };
