@@ -42,6 +42,11 @@ Create database if you don't have one:
 createdb nodejs_homework_db
 ```
 
+Drop database:
+```bash
+dropdb nodejs_homework_db
+```
+
 Run migration:
 ```bash
 yarn db-migrate

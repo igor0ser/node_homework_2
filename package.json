@@ -6,8 +6,8 @@
   "scripts": {
     "start": "tsc --watch & nodemon dist",
     "lint": "eslint src --ext ts",
-    "db-migrate": "cd database && npx sequelize-cli db:migrate",
-    "db-seeds": "cd database && npx sequelize-cli db:seed:all"
+    "migrate": "cd database && npx sequelize-cli db:migrate",
+    "seeds": "cd database && npx sequelize-cli db:seed:all"
   },
   "author": "",
   "license": "ISC",
