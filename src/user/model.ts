@@ -1,5 +1,4 @@
 import { Sequelize, Model, DataTypes, Op } from 'sequelize'
-import { UserAttributes } from './interface'
 
 const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
     host: 'localhost',
@@ -8,10 +7,21 @@ const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
 
 sequelize.authenticate()
 
-export class User extends Model<UserAttributes, UserAttributes> {
+export class User extends Model {
+    public id!: number;
+    public login!: string;
+    public password!: string;
+    public age!: number;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
 User.init({
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     login: DataTypes.STRING,
     password: DataTypes.STRING,
     age: DataTypes.INTEGER,
@@ -22,20 +32,17 @@ User.init({
 });
 
 type GetManyByAttrPayload = {
-    attr: keyof UserAttributes,
+    attr: keyof User,
     value: any,
     limit: number,
-    order: [keyof UserAttributes, 'ASC' | 'DESC'][]
+    order: [keyof User, 'ASC' | 'DESC'][]
 }
 
 export const UserModel = {
-    getOneById: async (id: number): Promise<UserAttributes | undefined> => {
-        const res: User = await User.findOne({ where: { id } });
-
-        return res && (res.get() as UserAttributes);
-    },
-    getManyByAttr: async ({ attr, value, limit, order }: GetManyByAttrPayload): Promise<UserAttributes[]> => {
-        const res = await User.findAll({
+    getOneById: (id: number): Promise<User | undefined> =>
+      User.findByPk(id),
+    getManyByAttr:  ({ attr, value, limit, order }: GetManyByAttrPayload): Promise<User[]> =>
+        User.findAll({
             where: {
                 [attr]: {
                     [Op.startsWith]: value
@@ -43,14 +50,9 @@ export const UserModel = {
             },
             limit,
             order,
-        })
-
-        return res.map(item => item.get() as UserAttributes)
-    },
+        }),
     remove: async (id: number): Promise<boolean> => {
-        const res = await User.findOne({
-            where: { id }
-        })
+        const res = await User.findByPk(id)
 
         if (!res) return false;
 
@@ -59,22 +61,18 @@ export const UserModel = {
 
         return true;
     },
-    create: async(user: Partial<UserAttributes>): Promise<UserAttributes> => {
-        const newUser = { ...user, isDeleted: false } as UserAttributes;
+    create: (user: Partial<User>): Promise<User> => {
+        const newUser = { ...user, isDeleted: false };
 
-        const res = await User.create(newUser)
-
-        return res.get() as UserAttributes;
+        return User.create(newUser)
     },
-    update: async (id: number, updatedUser: Partial<UserAttributes>): Promise<UserAttributes | false> => {
-        const res = await User.findOne({ where: { id } });
+    update: async (id: number, updatedUser: Partial<User>): Promise<User | false> => {
+        const res = await User.findByPk(id);
 
         if (!res) return false;
 
         res.update(updatedUser);
 
-        await res.save();
-
-        return res.get() as UserAttributes;
+        return res.save();
     },
 };

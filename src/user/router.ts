@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { UserAttributes } from './interface'
 import { UserService } from './service'
 import { validateOnUpdate, validateOnCreate } from './validators';
 
@@ -7,7 +6,7 @@ import { validateOnUpdate, validateOnCreate } from './validators';
 export const userRouter = Router();
 
 userRouter.get('/:id', async (req, res) => {
-    const user: UserAttributes = await UserService.getOne(req.params.id);
+    const user: Router = await UserService.getOne(req.params.id);
 
     if (user) {
         res.status(200).json(user);
@@ -22,7 +21,7 @@ userRouter.get('/', async (req, res) => {
     if (!login) {
         res.status(404).send('Please specify login query param');
     } else {
-        const users: UserAttributes[] = await UserService.getManyByLogin(login, limit);
+        const users: Router[] = await UserService.getManyByLogin(login, limit);
 
         res.status(200).json(users);
     }
@@ -48,7 +47,7 @@ userRouter.post('/', async (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const createdUser: UserAttributes = await UserService.create(req.body);
+    const createdUser: Router = await UserService.create(req.body);
 
     res.status(201).json(createdUser);
 });
@@ -61,7 +60,7 @@ userRouter.put('/:id', async (req, res) => {
         return res.status(400).send(error.toString());
     }
 
-    const updatedUser: UserAttributes | false = await UserService.update(req.params.id, req.body);
+    const updatedUser: Router | false = await UserService.update(req.params.id, req.body);
 
     if (updatedUser) {
         res.status(202).json(updatedUser);
