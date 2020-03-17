@@ -1,11 +1,11 @@
 import * as Joi from '@hapi/joi';
-import { PERMISSIONS_VALUES } from './interfaces'
+import { PERMISSIONS_VALUES } from './interfaces';
 
 const name = Joi.string();
 
 const permissions = Joi.array()
     .items(
-      Joi.string().valid(...PERMISSIONS_VALUES)
+        Joi.string().valid(...PERMISSIONS_VALUES)
     )
     .unique()
     .min(1);
@@ -13,12 +13,12 @@ const permissions = Joi.array()
 
 const schemaOnCreate = Joi.object({
     name: name.required(),
-    permissions: permissions.required(),
+    permissions: permissions.required()
 });
 
 const schemaOnUpdate = Joi.object({
     name,
-    permissions,
+    permissions
 });
 
 export const validateOnUpdate = (group) => schemaOnUpdate.validate(group);

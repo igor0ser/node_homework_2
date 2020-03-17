@@ -1,6 +1,6 @@
-import { Model, DataTypes, Op } from 'sequelize'
-import { sequelize } from '../helpers/initDB'
-import { Permission, PERMISSIONS_VALUES } from './interfaces'
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../helpers/initDB';
+import { Permission, PERMISSIONS_VALUES } from './interfaces';
 
 export class Group extends Model {
     public readonly id!: number;
@@ -14,12 +14,12 @@ Group.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
-        primaryKey: true,
+        primaryKey: true
     },
     name: DataTypes.STRING,
     permissions: DataTypes.ARRAY(
-      DataTypes.ENUM(...PERMISSIONS_VALUES)
-    ),
+        DataTypes.ENUM(...PERMISSIONS_VALUES)
+    )
 }, {
     modelName: 'Group',
     sequelize
@@ -27,10 +27,10 @@ Group.init({
 
 export const GroupModel = {
     getOneById: (id: number): Promise<Group | undefined> =>
-      Group.findByPk(id),
+        Group.findByPk(id),
     getAll: (): Promise<Group[]> => Group.findAll(),
     remove: async (id: number): Promise<boolean> => {
-        const res = await Group.findByPk(id)
+        const res = await Group.findByPk(id);
 
         if (!res) return false;
 
@@ -48,5 +48,5 @@ export const GroupModel = {
         res.update(updatedGroup);
 
         return res.save();
-    },
+    }
 };

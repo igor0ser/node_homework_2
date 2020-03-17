@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { UserService } from './service'
-import { User } from './model'
+import { UserService } from './service';
+import { User } from './model';
 import { validateOnUpdate, validateOnCreate } from './validators';
 
 

@@ -6,4 +6,4 @@ export enum Permission {
   UPLOAD_FILES = 'UPLOAD_FILES',
 }
 
-export const PERMISSIONS_VALUES = Object.values(Permission)
+export const PERMISSIONS_VALUES = Object.values(Permission);
