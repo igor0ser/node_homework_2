@@ -5,10 +5,10 @@ export const GroupService = {
     GroupModel.getOneById(Number(id)),
   getAll: (): Promise<Group[]> =>
     GroupModel.getAll(),
-  // remove: (id: string): Promise<boolean> =>
-  //   GroupModel.remove(Number(id)),
-  // create: (user: Partial<Group>): Promise<Group> =>
-  //   GroupModel.create(user),
-  // update: (id: string, user: Partial<Group>): Promise<Group | false> =>
-  //   GroupModel.update(Number(id), user),
+  remove: (id: string): Promise<boolean> =>
+    GroupModel.remove(Number(id)),
+  create: (group: Partial<Group>): Promise<Group> =>
+    GroupModel.create(group),
+  update: (id: string, user: Partial<Group>): Promise<Group | false> =>
+    GroupModel.update(Number(id), user),
 }

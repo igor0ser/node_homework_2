@@ -29,38 +29,24 @@ export const GroupModel = {
     getOneById: (id: number): Promise<Group | undefined> =>
       Group.findByPk(id),
     getAll: (): Promise<Group[]> => Group.findAll(),
-    // getManyByAttr:  ({ attr, value, limit, order }: GetManyByAttrPayload): Promise<User[]> =>
-    //     User.findAll({
-    //         where: {
-    //             [attr]: {
-    //                 [Op.startsWith]: value
-    //             }
-    //         },
-    //         limit,
-    //         order,
-    //     }),
-    // remove: async (id: number): Promise<boolean> => {
-    //     const res = await User.findByPk(id)
-    //
-    //     if (!res) return false;
-    //
-    //     res.update({ isDeleted: true });
-    //     await res.save();
-    //
-    //     return true;
-    // },
-    // create: (user: Partial<User>): Promise<User> => {
-    //     const newUser = { ...user, isDeleted: false };
-    //
-    //     return User.create(newUser)
-    // },
-    // update: async (id: number, updatedUser: Partial<User>): Promise<User | false> => {
-    //     const res = await User.findByPk(id);
-    //
-    //     if (!res) return false;
-    //
-    //     res.update(updatedUser);
-    //
-    //     return res.save();
-    // },
+    remove: async (id: number): Promise<boolean> => {
+        const res = await Group.findByPk(id)
+
+        if (!res) return false;
+
+        await res.destroy();
+
+        return true;
+    },
+    create: (group: Partial<Group>): Promise<Group> =>
+        Group.create(group),
+    update: async (id: number, updatedGroup: Partial<Group>): Promise<Group | false> => {
+        const res = await Group.findByPk(id);
+
+        if (!res) return false;
+
+        res.update(updatedGroup);
+
+        return res.save();
+    },
 };

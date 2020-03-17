@@ -1,13 +1,14 @@
 import * as Joi from '@hapi/joi';
 import { PERMISSIONS_VALUES } from './interfaces'
 
-const name = Joi.string()
-    .alphanum();
+const name = Joi.string();
 
 const permissions = Joi.array()
-    .items()
-    .valid(...PERMISSIONS_VALUES)
-    .min(1)
+    .items(
+      Joi.string().valid(...PERMISSIONS_VALUES)
+    )
+    .unique()
+    .min(1);
 
 
 const schemaOnCreate = Joi.object({
