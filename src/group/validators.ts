@@ -1,33 +1,24 @@
 import * as Joi from '@hapi/joi';
+import { PERMISSIONS_VALUES } from './interfaces'
 
-const login = Joi.string()
-    .alphanum()
-    .min(3)
-    .max(20);
+const name = Joi.string()
+    .alphanum();
 
-const password = Joi.string()
-    .regex(
-        /^(?=.*[a-zA-Z])(?=.*[0-9])/,
-        'at least one letter and one number'
-    )
-    .min(8)
-    .max(20);
+const permissions = Joi.array()
+    .items()
+    .valid(...PERMISSIONS_VALUES)
+    .min(1)
 
-const age = Joi.number()
-    .min(4)
-    .max(130);
 
 const schemaOnCreate = Joi.object({
-    login: login.required(),
-    password: password.required(),
-    age: age.required()
+    name: name.required(),
+    permissions: permissions.required(),
 });
 
 const schemaOnUpdate = Joi.object({
-    login,
-    password,
-    age
+    name,
+    permissions,
 });
 
-export const validateOnUpdate = (user) => schemaOnUpdate.validate(user);
-export const validateOnCreate = (user) => schemaOnCreate.validate(user);
+export const validateOnUpdate = (group) => schemaOnUpdate.validate(group);
+export const validateOnCreate = (group) => schemaOnCreate.validate(group);

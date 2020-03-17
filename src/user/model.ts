@@ -1,11 +1,5 @@
-import { Sequelize, Model, DataTypes, Op } from 'sequelize'
-
-const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
-    host: 'localhost',
-    dialect: 'postgres'
-});
-
-sequelize.authenticate()
+import { Model, DataTypes, Op } from 'sequelize'
+import { sequelize } from '../helpers/initDB'
 
 export class User extends Model {
     public id!: number;

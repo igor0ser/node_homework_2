@@ -1,13 +1,6 @@
 import { Model, DataTypes, Op } from 'sequelize'
 import { sequelize } from '../helpers/initDB'
-
-enum Permission {
-    READ = 'READ',
-    WRITE = 'WRITE',
-    DELETE = 'DELETE',
-    SHARE = 'SHARE',
-    UPLOAD_FILES = 'UPLOAD_FILES',
-}
+import { Permission, PERMISSIONS_VALUES } from './interfaces'
 
 export class Group extends Model {
     public readonly id!: number;
@@ -25,10 +18,8 @@ Group.init({
     },
     name: DataTypes.STRING,
     permissions: DataTypes.ARRAY(
-      DataTypes.ENUM(...Object.values(Permission))
+      DataTypes.ENUM(...PERMISSIONS_VALUES)
     ),
-    age: DataTypes.INTEGER,
-    isDeleted: DataTypes.BOOLEAN
 }, {
     modelName: 'Group',
     sequelize

@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { userRouter } from './user/router';
+import { groupRouter } from './group/router';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRouter);
+app.use('/groups', groupRouter);
 
 app.listen(3000);
 
