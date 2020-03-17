@@ -44,4 +44,10 @@ createdb nodejs_homework_db
 
 Run migration:
 ```bash
+yarn db-migrate
+```
+
+Run seeds:
+```bash
+yarn db-seeds
 ```
