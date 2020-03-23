@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Node.js homework #2');
+    res.send('Node.js homework #3');
 });
 
 app.use('/users', userRouter);
