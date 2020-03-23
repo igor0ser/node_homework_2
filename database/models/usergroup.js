@@ -9,9 +9,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   UserGroup.associate = function(models) {
+
     const { User, Group } = models
-    UserGroup.hasOne(User)
-    UserGroup.hasOne(Group)
+
+    // User.belongsToMany(Group, { through: UserGroup})
+
+    UserGroup.hasOne(User, { onUpdate: 'cascade' })
+    UserGroup.hasOne(Group, { onUpdate: 'cascade' })
   };
   return UserGroup;
 };

@@ -3,8 +3,8 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('UserGroups', [
       {
-        groupId: 1,
-        userId: 1,
+        GroupId: 1,
+        UserId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

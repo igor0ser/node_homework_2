@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
     permissions: DataTypes.ARRAY(DataTypes.ENUM('READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES'))
   }, {});
   Group.associate = function(models) {
+    Group.hasMany(models.UserGroups, {
+      onDelete: 'cascade'
+    })
   };
   return Group;
 };
