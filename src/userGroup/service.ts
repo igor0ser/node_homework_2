@@ -4,5 +4,5 @@ export const UserGroupService = {
     getAll: (): Promise<UserGroup[]> =>
         UserGroupModel.getAll(),
     create: (group: Partial<UserGroup>): Promise<UserGroup> =>
-      UserGroupModel.create(UserGroup),
+      UserGroupModel.create(group),
 };

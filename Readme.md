@@ -37,6 +37,11 @@ su - postgres
 createuser --interactive --pwprompt
 ```
 
+Start postgres server:
+```bash
+pg_ctl -D /usr/local/var/postgres start
+```
+
 Create database if you don't have one:
 ```bash
 createdb nodejs_homework_db

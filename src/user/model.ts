@@ -35,6 +35,7 @@ type GetManyByAttrPayload = {
 export const UserModel = {
     getOneById: (id: number): Promise<User | undefined> =>
         User.findByPk(id),
+    getAll: (): Promise<User[]> => User.findAll(),
     getManyByAttr:  ({ attr, value, limit, order }: GetManyByAttrPayload): Promise<User[]> =>
         User.findAll({
             where: {

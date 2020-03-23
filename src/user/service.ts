@@ -3,6 +3,7 @@ import { UserModel, User } from './model';
 export const UserService = {
     getOne: (id: string): Promise<User | undefined> =>
         UserModel.getOneById(Number(id)),
+    getAll: (): Promise<User[]> => UserModel.getAll(),
     getManyByLogin: (loginSubStr: string, limit: number = 10): Promise<User[]> =>
         UserModel.getManyByAttr({
             attr: 'login',

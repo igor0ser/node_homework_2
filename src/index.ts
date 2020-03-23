@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Node.js homework #3');
+    res.send('Node.js homework #4');
 });
 
 app.use('/users', userRouter);
