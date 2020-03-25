@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     isDeleted: DataTypes.BOOLEAN
   }, {});
   User.associate = function(models) {
+    User.hasMany(models.UserGroups, {
+      onDelete: 'cascade'
+    })
   };
   return User;
 };

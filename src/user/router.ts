@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import { UserService } from './service'
-import { User } from './model'
+import { UserService } from './service';
+import { User } from './model';
 import { validateOnUpdate, validateOnCreate } from './validators';
-
 
 export const userRouter = Router();
 
@@ -20,7 +19,10 @@ userRouter.get('/', async (req, res) => {
     const { login, limit } = req.query;
 
     if (!login) {
-        res.status(404).send('Please specify login query param');
+        // res.status(404).send('Please specify login query param');
+        const users: User[] = await UserService.getAll();
+
+        res.status(200).json(users);
     } else {
         const users: User[] = await UserService.getManyByLogin(login, limit);
 

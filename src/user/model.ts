@@ -1,11 +1,5 @@
-import { Sequelize, Model, DataTypes, Op } from 'sequelize'
-
-const sequelize = new Sequelize('nodejs_homework_db', 'root', null, {
-    host: 'localhost',
-    dialect: 'postgres'
-});
-
-sequelize.authenticate()
+import { Model, DataTypes, Op } from 'sequelize';
+import { sequelize } from '../helpers/initDB';
 
 export class User extends Model {
     public id!: number;
@@ -20,7 +14,7 @@ User.init({
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
-        primaryKey: true,
+        primaryKey: true
     },
     login: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -40,7 +34,8 @@ type GetManyByAttrPayload = {
 
 export const UserModel = {
     getOneById: (id: number): Promise<User | undefined> =>
-      User.findByPk(id),
+        User.findByPk(id),
+    getAll: (): Promise<User[]> => User.findAll(),
     getManyByAttr:  ({ attr, value, limit, order }: GetManyByAttrPayload): Promise<User[]> =>
         User.findAll({
             where: {
@@ -49,10 +44,10 @@ export const UserModel = {
                 }
             },
             limit,
-            order,
+            order
         }),
     remove: async (id: number): Promise<boolean> => {
-        const res = await User.findByPk(id)
+        const res = await User.findByPk(id);
 
         if (!res) return false;
 
@@ -64,7 +59,7 @@ export const UserModel = {
     create: (user: Partial<User>): Promise<User> => {
         const newUser = { ...user, isDeleted: false };
 
-        return User.create(newUser)
+        return User.create(newUser);
     },
     update: async (id: number, updatedUser: Partial<User>): Promise<User | false> => {
         const res = await User.findByPk(id);
@@ -74,5 +69,5 @@ export const UserModel = {
         res.update(updatedUser);
 
         return res.save();
-    },
+    }
 };
